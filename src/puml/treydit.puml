@@ -1,0 +1,105 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+class Treyder<<Entity>>{
+TreyderId : Long
+name : Name
+gender : Gender
+username : String
+email : String
+BirthDate : LocalDate
+role : Role
+reputation : Reputation
+address : Address
+phonenumber : Phonenumber
+password : String
+city : City
+items : List<Item>
+
+}
+class Item<<Entity>>{
+ItemId : Long
+name : String
+cost : double
+description : String
+itemCondition : Condition
+category : Category
+treyder : Treyder
+}
+class City<<Entity>>{
+CityId : Long
+name : String
+treyders : List<Treyder>
+country : Country
+}
+class Country<<Entity>>{
+CountryId : Long
+name : String
+iso2Code : String
+countryNumber : Integer
+cities : List<City>
+}
+
+class Address<<ValueObject>>{
+addressName : String
+housenumber : Integer
+blocknumber : Integer
+doornumber : Integer
+zipcode : Integer
+}
+class Name<<ValueObject>>{
+firstname : String
+subname : String
+lastname : String
+}
+class Phonenumber<<ValueObject>>{
+country_code : Integer
+serialnumber : Integer
+}
+
+enum Gender {
+ MALE,
+ FEMALE,
+ DIVERS
+}
+
+enum Category{
+    CAR,
+    COMPUTER,
+    SOFTWARE,
+    CLOTHE,
+    BAG,
+    PHONE,
+    TOY,
+    TABLET
+}
+enum Condition{
+    GOOD,
+    USABLE,
+    BAD
+}
+enum Reputation{
+     A,
+     B
+}
+enum Role{
+     Treyder,
+     Admin
+}
+
+Treyder -up- Gender
+Treyder -up- Address
+Treyder -left- Role
+Treyder -left- Reputation
+Treyder -right- Name
+Treyder -right- Phonenumber
+
+Item -left- Condition
+
+Treyder "0..n" *-down- "1" City : contains
+City "0..n" *-down- "1" Country : contains
+Item "0..n" *-down- "1" Treyder : contains
+
+
+
+@enduml
