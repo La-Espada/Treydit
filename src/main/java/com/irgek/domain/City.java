@@ -1,5 +1,6 @@
 package com.irgek.domain;
 
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -26,5 +27,7 @@ public class City extends AbstractPersistable<Long> {
     private Country country;
     @OneToMany
     private List<Treyder> treyders = new ArrayList<>();
+
+
 
 }

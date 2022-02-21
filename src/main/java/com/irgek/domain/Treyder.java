@@ -1,5 +1,6 @@
 package com.irgek.domain;
 
+
 import com.irgek.domain.Address;
 import com.irgek.domain.Name;
 import com.irgek.domain.Phonenumber;
@@ -38,5 +39,6 @@ public class Treyder extends AbstractPersistable<Long> {
     private City city;
     @OneToMany
     private List<Item> items = new ArrayList<>();
+
 
 }
