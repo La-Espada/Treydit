@@ -15,6 +15,8 @@
 	<description>School project with spring boot</description>
 	<properties>
 		<java.version>17</java.version>
+		<querydsl.version>5.0.0</querydsl.version>
+		<querydsl-jpa.version>5.0.0</querydsl-jpa.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -44,6 +46,24 @@
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
+		<dependency>
+			<groupId>com.querydsl</groupId>
+			<artifactId>querydsl-jpa</artifactId>
+			<version>${querydsl-jpa.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.querydsl</groupId>
+			<artifactId>querydsl-apt</artifactId>
+			<version>${querydsl.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.querydsl</groupId>
+			<artifactId>querydsl-jpa</artifactId>
+			<version>${querydsl.version}</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
