@@ -1,16 +1,16 @@
-package com.irgek.domain;
+package com.irgek.Treydit.domain;
 
 
-import com.irgek.domain.Address;
-import com.irgek.domain.Name;
-import com.irgek.domain.Phonenumber;
-import jakarta.persistence.*;
+import com.irgek.Treydit.domain.Address;
+import com.irgek.Treydit.domain.Name;
+import com.irgek.Treydit.domain.Phonenumber;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
