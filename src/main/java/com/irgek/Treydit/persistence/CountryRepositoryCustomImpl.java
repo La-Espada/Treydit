@@ -1,12 +1,12 @@
-package com.irgek.persistence;
+package com.irgek.Treydit.persistence;
 
-import com.irgek.domain.Country;
-import jakarta.persistence.EntityManager;
+import com.irgek.Treydit.domain.*;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.EntityManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -41,7 +41,6 @@ public class CountryRepositoryCustomImpl extends QuerydslRepositorySupport imple
             public Country mapRow(ResultSet rs, int rowNum) throws SQLException {
                 Country country = new Country();
                 country.setName(rs.getString("Name"));
-                country.setCountryNumber(rs.getInt("Country number"));
                 country.setIso2Code(rs.getString("Iso2Code"));
                 return country;
             }

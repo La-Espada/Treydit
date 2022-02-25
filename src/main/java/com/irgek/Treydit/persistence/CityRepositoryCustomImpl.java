@@ -1,19 +1,19 @@
-package com.irgek.persistence;
+package com.irgek.Treydit.persistence;
 
-import com.irgek.domain.City;
-import com.irgek.domain.Country;
-import jakarta.persistence.EntityManager;
+import com.irgek.Treydit.domain.*;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.EntityManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
 @Component
 public class CityRepositoryCustomImpl extends QuerydslRepositorySupport implements  CityRepositoryCustom {
+
 
    private EntityManager entityManager;
    private final JdbcTemplate jdbcTemplate;
