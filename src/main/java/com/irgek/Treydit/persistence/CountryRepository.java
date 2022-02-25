@@ -1,6 +1,6 @@
-package com.irgek.persistence;
+package com.irgek.Treydit.persistence;
 
-import com.irgek.domain.Country;
+import com.irgek.Treydit.domain.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.stereotype.Repository;
