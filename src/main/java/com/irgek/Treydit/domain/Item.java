@@ -1,11 +1,12 @@
-package com.irgek.domain;
+package com.irgek.Treydit.domain;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.AbstractPersistable;
+
+import javax.persistence.*;
 
 @Data
 @NoArgsConstructor
