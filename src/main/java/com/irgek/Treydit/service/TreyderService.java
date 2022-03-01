@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import javax.persistence.PersistenceException;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -85,6 +87,25 @@ public class TreyderService {
 
         }
 
+    }
 
+    public void deleteTreyder(Treyder treyder){
+        treyderRepository.delete(treyder);
+    }
+
+    public Optional<Treyder> getTreyderbyId(Long id){
+        return treyderRepository.findTreyderById(id);
+    }
+
+    public Optional<Treyder> getTreyderbyUsername(String username){
+        return treyderRepository.findTreyderByUsername(username);
+    }
+
+    public List<Treyder> getTreyderbyFirstname(String firstname){
+        return treyderRepository.getTreyderbyFirstname(firstname);
+    }
+
+    public List<Treyder> getTreyders(){
+        return treyderRepository.findAll();
     }
 }

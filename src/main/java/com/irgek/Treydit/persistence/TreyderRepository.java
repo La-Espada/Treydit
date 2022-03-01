@@ -10,4 +10,5 @@ import java.util.Optional;
 @Repository
 public interface TreyderRepository extends JpaRepository<Treyder,TreyderRepositoryCustom>, QuerydslPredicateExecutor<Treyder>,TreyderRepositoryCustom {
     Optional<Treyder> findTreyderByUsername(String username);
+    Optional<Treyder> findTreyderById(Long id);
 }
