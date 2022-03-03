@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.ArrayList;
@@ -23,6 +24,6 @@ import java.util.List;
 public class Country extends AbstractPersistable<Long> {
     private String name;
     private String iso2Code;
-    @OneToMany
+    @OneToMany(targetEntity = City.class)
     List<City> cities = new ArrayList<>();
 }

@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.PersistenceException;
 import javax.transaction.Transactional;
+import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -49,6 +51,14 @@ public class CountryService {
         catch(PersistenceException pEx){
             throw ServiceException.cannotCreateEntity(newCountry,pEx);
         }
+    }
+
+    public List<Country> getCountries(){
+        return  countryRepository.findAll();
+    }
+
+    public Country getCountryById(Long id){
+        return  countryRepository.findCountryById(id);
     }
 
 }

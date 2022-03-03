@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.PersistenceException;
 import javax.transaction.Transactional;
+import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -45,5 +47,13 @@ public class CityService {
         catch(PersistenceException pEx){
             throw ServiceException.cannotCreateEntity(newCity,pEx);
         }
+    }
+
+    public List<City> getCities(){
+        return cityRepository.findAll();
+    }
+
+    public Optional<City> getCitybyId(Long id){
+        return  cityRepository.findCityById(id);
     }
 }

@@ -10,4 +10,5 @@ import java.util.Optional;
 @Repository
 public interface CountryRepository extends JpaRepository<Country,CountryRepositoryCustom>, QuerydslPredicateExecutor<Country>, CountryRepositoryCustom {
     Optional<Country> findCountryByName(String name);
+    Country findCountryById(Long id);
 }

@@ -18,12 +18,8 @@ public class ItemRepositoryTest {
 
     @Test
     void ensureSavingWorksProperly(){
-        Name cemil = Name.builder()
-                .firstname("Cemil")
-                .lastname("Aslan")
-                .build();
         Address address = Address.builder()
-                .addressName("Pernerstorfergasse 60")
+                .street("Pernerstorfergasse 60")
                 .blocknumber(3)
                 .doornumber(18)
                 .zipcode(1100)
@@ -36,7 +32,9 @@ public class ItemRepositoryTest {
                 .name("Vienna")
                 .build();
 
-        Treyder treyder = Treyder.builder().name(cemil)
+        Treyder treyder = Treyder.builder()
+                .firstname("Cemil")
+                .lastname("Aslan")
                 .gender(Gender.MALE)
                 .username("Turkikaze")
                 .email("aslancemil09@gmail.com")

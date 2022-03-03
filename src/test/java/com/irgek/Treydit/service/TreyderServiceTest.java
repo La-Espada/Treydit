@@ -33,13 +33,9 @@ public class TreyderServiceTest {
 
     @Test
     void ensureCreatingTreyderWithExceptionHandlingIsRight(){
-        Name cemil = Name.builder()
-                .firstname("Cemil")
-                .subname("hallo")
-                .lastname("Aslan")
-                .build();
+
         Address address = Address.builder()
-                .addressName("Pernerstorfergasse 60")
+                .street("Pernerstorfergasse 60")
                 .blocknumber(3)
                 .doornumber(18)
                 .zipcode(1100)
@@ -52,7 +48,9 @@ public class TreyderServiceTest {
                 .name("Vienna")
                 .build();
 
-        Treyder treyder = Treyder.builder().name(cemil)
+        Treyder treyder = Treyder.builder()
+                .firstname("Cemil")
+                .lastname("Lastname")
                 .gender(Gender.MALE)
                 .username("Turkikaze")
                 .email("aslancemil09@gmail.com")
@@ -68,10 +66,10 @@ public class TreyderServiceTest {
         when(treyderRepository.findTreyderByUsername(treyder.getUsername())).thenReturn(Optional.empty());
         when(treyderRepository.save(any())).thenThrow(pEx);
 
-        var ex = assertThrows(ServiceException.class, ()-> treyderService.createTreyder(cemil,treyder.getGender(),treyder.getUsername(),treyder.getEmail(),treyder.getBirthDate(),address,phonenumber,treyder.getPassword(),treyder.getRole(),vienna));
+        var ex = assertThrows(ServiceException.class, ()-> treyderService.createTreyder(treyder.getFirstname(),treyder.getLastname(),treyder.getGender(),treyder.getUsername(),treyder.getEmail(),treyder.getBirthDate(),address,phonenumber,treyder.getPassword(),treyder.getRole(),vienna));
 
         assertThat(ex).hasMessageContaining("Treyder")
-                .hasMessageContaining(treyder.getUsername(),cemil,treyder.getGender(),treyder.getEmail(),treyder.getBirthDate(),address,phonenumber,treyder.getPassword(),treyder.getRole(),vienna)
+                .hasMessageContaining(treyder.getFirstname(),treyder.getLastname(),treyder.getUsername(),treyder.getGender(),treyder.getEmail(),treyder.getBirthDate(),address,phonenumber,treyder.getPassword(),treyder.getRole(),vienna)
                 .hasMessageContaining("database problem")
                 .hasRootCause(pEx);
     }

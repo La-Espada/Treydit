@@ -10,4 +10,5 @@ import java.util.Optional;
 @Repository
 public interface CityRepository extends JpaRepository <City, CityRepositoryCustom>, QuerydslPredicateExecutor<City>, CityRepositoryCustom {
     Optional<City> findCityByName(String name);
+    Optional<City> findCityById(Long id);
 }

@@ -19,17 +19,16 @@ import java.util.Map;
 
 @RestController
 @RequestMapping(TreyderRestController.BASE_URL)
-@CrossOrigin
+@CrossOrigin("*")
 public class TreyderRestController {
 
-    public static final String BASE_URL = "/api/treyder";
-    public static final String PATH_INDEX = "/";
+    public static final String BASE_URL = "/api/treyder/";
     public static final String PATH_VAR_ID ="/{id}";
     public static final String ROUTE_ID = BASE_URL + PATH_VAR_ID;
 
     private final TreyderService treyderService;
 
-    @GetMapping({"",PATH_INDEX})
+    @GetMapping({"/"})
     public HttpEntity<List<Treyder>> getTreyder(){
         List<Treyder> treyders = treyderService.getTreyders();
 
@@ -46,13 +45,14 @@ public class TreyderRestController {
                 .orElse(ResponseEntity.noContent().build());
     }
 
-    @PostMapping({"add",PATH_INDEX})
-    public HttpEntity<Treyder> createTreyder(@RequestBody Name name, Gender gender, String username, String email, LocalDate birthDate, Address address, Phonenumber phonenumber, String password, Role role, City city){
-        Treyder treyder = treyderService.createTreyder(name,gender, username,email, birthDate, address,phonenumber,password, role, city);
+    @PostMapping({"add","/"})
+    public HttpEntity<Treyder> createTreyder(@RequestBody Treyder treyder){
+        Treyder treyder1 = treyderService.save(treyder);
+        //Treyder treyder1 = treyderService.createTreyder(treyder.getFirstname(),treyder.getLastname(),treyder.getGender(), treyder.getUsername(),treyder.getEmail(), treyder.getBirthDate(),treyder.getAddress(),treyder.getPhonenumber(),treyder.getPassword(), treyder.getRole(), treyder.getCity());
         URI self = UriComponentsBuilder.fromPath(ROUTE_ID)
-                .uriVariables(Map.of("id", treyder.getId()))
+                .uriVariables(Map.of("id", treyder1.getId()))
                 .build().toUri();
 
-        return  ResponseEntity.created(self).body(treyder);
+        return  ResponseEntity.created(self).body(treyder1);
     }
 }

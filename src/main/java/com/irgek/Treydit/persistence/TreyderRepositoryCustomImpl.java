@@ -40,7 +40,8 @@ public class TreyderRepositoryCustomImpl extends QuerydslRepositorySupport imple
             @Override
             public Treyder mapRow(ResultSet rs, int rowNum) throws SQLException {
                 Treyder treyder = new Treyder();
-                treyder.setName((Name) rs.getObject("Name"));
+                treyder.setFirstname((String) rs.getObject("Firstname"));
+                treyder.setLastname((String) rs.getObject("Lastname"));
                 treyder.setUsername(rs.getString("Username"));
                 treyder.setGender((Gender) rs.getObject("Gender"));
                 treyder.setBirthDate(rs.getDate("LocalDate").toLocalDate());

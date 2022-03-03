@@ -22,17 +22,18 @@ public class TreyderService {
     private String CANNOT_BE_EMPTY_OR_BLANK = "cannot be empty or blank!";
     private String CANNOT_BE_BLANK = "cannot be blank!";
 
-    public Treyder createTreyder(Name name, Gender gender, String username, String email, LocalDate birthDate, Address address, Phonenumber phonenumber, String password, Role role,City city) {
+    public Treyder createTreyder(String firstname,String lastname, Gender gender, String username, String email, LocalDate birthDate, Address address, Phonenumber phonenumber, String password, Role role,City city) {
         Treyder newTreyder = null;
 
-        if (name == null) {
+        if (firstname == null) {
             throw new IllegalArgumentException("Name " + CANNOT_BE_NULL);
-        } else if (name.getFirstname().isBlank() || name.getFirstname().isEmpty()) {
+        } else if (firstname.isBlank() || firstname.isEmpty()) {
             throw new IllegalArgumentException("Firstname " + CANNOT_BE_EMPTY_OR_BLANK);
-        } else if (name.getLastname().isBlank() || name.getLastname().isEmpty()) {
+        } else if (lastname == null) {
+            throw new IllegalArgumentException("Name " + CANNOT_BE_NULL);
+        }
+        else if (lastname.isBlank() || lastname.isEmpty()) {
             throw new IllegalArgumentException("Lastname " + CANNOT_BE_EMPTY_OR_BLANK);
-        } else if (name.getSubname().isBlank()) {
-            throw new IllegalArgumentException("Subname " + CANNOT_BE_BLANK);
         } else if (gender == null) {
             throw new IllegalArgumentException("Gender " + CANNOT_BE_NULL);
         }
@@ -58,10 +59,10 @@ public class TreyderService {
             throw new IllegalArgumentException("Username " + CANNOT_BE_EMPTY_OR_BLANK);
         }
         else if(role == null){
-            throw new IllegalArgumentException("Birthdate " + CANNOT_BE_NULL);
+            throw new IllegalArgumentException("Role " + CANNOT_BE_NULL);
         }
         else if(city == null){
-            throw new IllegalArgumentException("Birthdate " + CANNOT_BE_NULL);
+            throw new IllegalArgumentException("City " + CANNOT_BE_NULL);
         }
         try{
             var treyder = treyderRepository.findTreyderByUsername(username);
@@ -69,7 +70,8 @@ public class TreyderService {
                 return treyder.get();
             }
              newTreyder = Treyder.builder()
-                     .name(name)
+                     .firstname(firstname)
+                     .lastname(lastname)
                     .gender(gender)
                     .username(username)
                     .email(email)
@@ -87,6 +89,9 @@ public class TreyderService {
 
         }
 
+    }
+    public Treyder save(Treyder treyder){
+         return treyderRepository.save(treyder);
     }
 
     public void deleteTreyder(Treyder treyder){
