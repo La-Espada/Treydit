@@ -4,4 +4,8 @@ const getAllTreyders = () => {
     return httpClient.get('/treyder/');
 }
 
-export default {getAllTreyders};
+const create = (data) =>{
+   return httpClient.post("/treyder/",data);
+}
+
+export default {getAllTreyders, create};
