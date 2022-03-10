@@ -22,7 +22,7 @@ import java.util.Map;
 @CrossOrigin("*")
 public class TreyderRestController {
 
-    public static final String BASE_URL = "/api/treyder/";
+    public static final String BASE_URL = "/api/treyder";
     public static final String PATH_VAR_ID ="/{id}";
     public static final String ROUTE_ID = BASE_URL + PATH_VAR_ID;
 
@@ -45,7 +45,8 @@ public class TreyderRestController {
                 .orElse(ResponseEntity.noContent().build());
     }
 
-    @PostMapping({"add","/"})
+    @CrossOrigin("*")
+    @PostMapping({"","/add"})
     public HttpEntity<Treyder> createTreyder(@RequestBody Treyder treyder){
         Treyder treyder1 = treyderService.save(treyder);
         //Treyder treyder1 = treyderService.createTreyder(treyder.getFirstname(),treyder.getLastname(),treyder.getGender(), treyder.getUsername(),treyder.getEmail(), treyder.getBirthDate(),treyder.getAddress(),treyder.getPhonenumber(),treyder.getPassword(), treyder.getRole(), treyder.getCity());

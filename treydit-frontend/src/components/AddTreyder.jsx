@@ -14,6 +14,8 @@ const AddTreyder = () => {
     const [housenumber, setHousenumber] = useState('');
     const [blocknumber, setBlocknumber] = useState('');
     const [doornumber, setDoornumber] = useState('');
+    const [countryCode, setCountryCode] = useState('');
+    const [serialNumber, setSerialNumber] = useState('');
     const [zipcode, setZipcode] = useState('');
     const [password, setPassword] = useState('');
     const [role, setRole] = useState('');
@@ -23,7 +25,10 @@ const AddTreyder = () => {
     const saveTreyder = (e) =>{
        e.preventDefault();
 
-       const treyder = {username,firstname,lastname,gender,email,birthDate,street,housenumber,blocknumber,doornumber,zipcode,password,role,city};
+
+       const address ={street,housenumber,blocknumber,doornumber,zipcode,};
+       const phonenumber={countryCode,serialNumber};
+       const treyder = {username,firstname,lastname,gender,email,birthDate,address,phonenumber,password,role,};
        treyderService.create(treyder)
        .then(response =>{
            console.log('Treyder data added successfully',response.data);
@@ -72,17 +77,15 @@ const AddTreyder = () => {
                     />
                     </div>
                      <div className="form-group">
-                    <select
+                   <input
                      type="text"
                      className="form-control col-4"
                      id="Gender"
                      value={gender}
                      onChange = {(e) =>setGender(e.target.value)}
+                     placeholder="Enter your gender"
                     >
-                    <option th:each="gender : ${T(com.irgek.Treydit.domain.Gender).values()}" 
-                            th:value="${gender}"
-                            th:text ="${gender}"></option>
-                    </select>
+                    </input>
                     </div>
                     <div className="form-group">
                     <input
@@ -178,12 +181,23 @@ const AddTreyder = () => {
                       <input
                      type="text"
                      className="form-control col-4"
-                     id="City"
-                     value={city}
-                     onChange = {(e) =>setCity(e.target.value)}
-                     placeholder = "Enter your City"
+                     id="country_code"
+                     value={countryCode}
+                     onChange = {(e) =>setCountryCode(e.target.value)}
+                     placeholder = "Enter your Country"
                     />
-                   </div>
+                    </div>
+                    <div className="form-group">
+                      <input
+                     type="text"
+                     className="form-control col-4"
+                     id="Serialnumber"
+                     value={serialNumber}
+                     onChange = {(e) =>setSerialNumber(e.target.value)}
+                     placeholder = "Enter your Serialnumber"
+                    />
+                    </div>
+                    
                 <div>
                     <button className="btn btn-primary" onClick={(e) => saveTreyder(e)}>Save</button>
                 </div>

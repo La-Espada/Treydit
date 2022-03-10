@@ -30,9 +30,9 @@ public class CityService {
         else if (name.isBlank() || name.isEmpty()) {
             throw new IllegalArgumentException("Name " + CANNOT_BE_EMPTY_OR_BLANK);
         }
-        else if(country == null){
-            throw new IllegalArgumentException("Country " + CANNOT_BE_NULL);
-        }
+//        else if(country == null){
+//            throw new IllegalArgumentException("Country " + CANNOT_BE_NULL);
+//        }
         try {
             var city = cityRepository.findCityByName(name);
             if(city.isPresent()){

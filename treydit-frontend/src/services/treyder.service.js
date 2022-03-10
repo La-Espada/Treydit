@@ -5,7 +5,7 @@ const getAllTreyders = () => {
 }
 
 const create = (data) =>{
-   return httpClient.post("/treyder/",data);
+   return httpClient.post("/treyder/add",data);
 }
 
 export default {getAllTreyders, create};

@@ -42,7 +42,6 @@ public class CityRestController {
     @PostMapping({"add","/"})
     public HttpEntity<City> addCity(@RequestBody String name, Long country_id){
         Country country = countryService.getCountryById(country_id);
-        System.out.println(country.getName());
         City city = cityService.createCity(name,country);
         URI self = UriComponentsBuilder.fromPath(ROUTE_ID)
                 .uriVariables(Map.of("id", city.getId()))
