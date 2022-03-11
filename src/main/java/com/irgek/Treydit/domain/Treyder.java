@@ -32,8 +32,7 @@ public class Treyder extends AbstractPersistable<Long> {
     private Reputation reputation;
     @Embedded
     private Address address;
-    @Embedded
-    private Phonenumber phonenumber;
+    private String phonenumber;
     private String password;
     @Enumerated(EnumType.STRING)
     private Role role;

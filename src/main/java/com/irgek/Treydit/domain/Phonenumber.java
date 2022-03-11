@@ -15,6 +15,6 @@ import javax.persistence.Embeddable;
 
 @Embeddable
 public class Phonenumber {
-    private int country_code;
+    private String country_code;
     private String serialnumber;
 }

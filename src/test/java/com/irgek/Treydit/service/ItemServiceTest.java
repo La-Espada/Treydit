@@ -39,7 +39,7 @@ public class ItemServiceTest {
                  .zipcode(1100)
                  .build();
          Phonenumber phonenumber = Phonenumber.builder()
-                 .country_code(43)
+                 .country_code("43")
                  .serialnumber("6641840791")
                  .build();
          City vienna = City.builder()
@@ -54,7 +54,7 @@ public class ItemServiceTest {
                  .email("aslancemil09@gmail.com")
                  .birthDate(LocalDate.of(2002,3,20))
                  .address(address)
-                 .phonenumber(phonenumber)
+                 .phonenumber("436641840791")
                  .password("Cemilaslan2002")
                  .role(Role.Treyder)
                  .city(vienna)

@@ -41,8 +41,7 @@ function TreydersList() {
             <th>Blocknumber</th>
             <th>Doornumber</th>
             <th>Zipcode</th>
-            <th>Areacode</th>
-            <th>Serialnumber</th>
+            <th>Phonenumber</th>
             <th>Password</th>
             <th>Role</th>
             <th>City</th>
@@ -62,8 +61,7 @@ function TreydersList() {
                 <td>{treyder.address.blocknumber}</td>
                 <td>{treyder.address.doornumber}</td>
                 <td>{treyder.address.zipcode}</td>
-                <td>{treyder.phonenumber.country_code}</td>
-                <td>{treyder.phonenumber.serialnumber}</td>
+                <td>{treyder.phonenumber}</td>
                 <td>{treyder.password}</td>
                 <td>{treyder.role}</td>
                 <td>{treyder.city}</td>

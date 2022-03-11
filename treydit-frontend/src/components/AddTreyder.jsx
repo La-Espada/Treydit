@@ -14,21 +14,19 @@ const AddTreyder = () => {
     const [housenumber, setHousenumber] = useState('');
     const [blocknumber, setBlocknumber] = useState('');
     const [doornumber, setDoornumber] = useState('');
-    const [countryCode, setCountryCode] = useState('');
-    const [serialNumber, setSerialNumber] = useState('');
+    const [phonenumber, setPhonenumber] = useState('');
     const [zipcode, setZipcode] = useState('');
     const [password, setPassword] = useState('');
     const [role, setRole] = useState('');
-    const [city, setCity] = useState('');
-    const history = useNavigate();
+  
 
     const saveTreyder = (e) =>{
        e.preventDefault();
 
 
        const address ={street,housenumber,blocknumber,doornumber,zipcode,};
-       const phonenumber={countryCode,serialNumber};
-       const treyder = {username,firstname,lastname,gender,email,birthDate,address,phonenumber,password,role,};
+       //const phonenumber={countryCode,serialNumber};
+       const treyder = {username,firstname,lastname,gender,email,birthDate,address,phonenumber,password,role};
        treyderService.create(treyder)
        .then(response =>{
            console.log('Treyder data added successfully',response.data);
@@ -181,20 +179,10 @@ const AddTreyder = () => {
                       <input
                      type="text"
                      className="form-control col-4"
-                     id="country_code"
-                     value={countryCode}
-                     onChange = {(e) =>setCountryCode(e.target.value)}
-                     placeholder = "Enter your Country"
-                    />
-                    </div>
-                    <div className="form-group">
-                      <input
-                     type="text"
-                     className="form-control col-4"
-                     id="Serialnumber"
-                     value={serialNumber}
-                     onChange = {(e) =>setSerialNumber(e.target.value)}
-                     placeholder = "Enter your Serialnumber"
+                     id="phonenumber"
+                     value={phonenumber}
+                     onChange = {(e) =>setPhonenumber(e.target.value)}
+                     placeholder = "Enter your Phonenumber"
                     />
                     </div>
                     

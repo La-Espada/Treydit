@@ -22,7 +22,7 @@ public class TreyderService {
     private String CANNOT_BE_EMPTY_OR_BLANK = "cannot be empty or blank!";
     private String CANNOT_BE_BLANK = "cannot be blank!";
 
-    public Treyder createTreyder(String firstname,String lastname, Gender gender, String username, String email, LocalDate birthDate, Address address, Phonenumber phonenumber, String password, Role role,City city) {
+    public Treyder createTreyder(String firstname,String lastname, Gender gender, String username, String email, LocalDate birthDate, Address address, String phonenumber, String password, Role role,City city) {
         Treyder newTreyder = null;
 
         if (firstname == null) {

@@ -41,7 +41,7 @@ public class TreyderServiceTest {
                 .zipcode(1100)
                 .build();
         Phonenumber phonenumber = Phonenumber.builder()
-                .country_code(43)
+                .country_code("43")
                 .serialnumber("6641840791")
                 .build();
         City vienna = City.builder()
@@ -56,7 +56,7 @@ public class TreyderServiceTest {
                 .email("aslancemil09@gmail.com")
                 .birthDate(LocalDate.of(2002,3,20))
                 .address(address)
-                .phonenumber(phonenumber)
+                .phonenumber("436641840791")
                 .password("Cemilaslan2002")
                 .role(Role.Treyder)
                 .city(vienna)
@@ -66,7 +66,7 @@ public class TreyderServiceTest {
         when(treyderRepository.findTreyderByUsername(treyder.getUsername())).thenReturn(Optional.empty());
         when(treyderRepository.save(any())).thenThrow(pEx);
 
-        var ex = assertThrows(ServiceException.class, ()-> treyderService.createTreyder(treyder.getFirstname(),treyder.getLastname(),treyder.getGender(),treyder.getUsername(),treyder.getEmail(),treyder.getBirthDate(),address,phonenumber,treyder.getPassword(),treyder.getRole(),vienna));
+        var ex = assertThrows(ServiceException.class, ()-> treyderService.createTreyder(treyder.getFirstname(),treyder.getLastname(),treyder.getGender(),treyder.getUsername(),treyder.getEmail(),treyder.getBirthDate(),address,treyder.getPhonenumber(),treyder.getPassword(),treyder.getRole(),vienna));
 
         assertThat(ex).hasMessageContaining("Treyder")
                 .hasMessageContaining(treyder.getFirstname(),treyder.getLastname(),treyder.getUsername(),treyder.getGender(),treyder.getEmail(),treyder.getBirthDate(),address,phonenumber,treyder.getPassword(),treyder.getRole(),vienna)
