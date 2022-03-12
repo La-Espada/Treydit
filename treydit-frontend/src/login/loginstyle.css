@@ -1,0 +1,18 @@
+html {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.login {
+    top: 50%;
+    transform: translate(0, 50%);
+    padding: 2%;
+    background-color: rgba( 0, 0, 0, 0.6);
+    font-size: large;
+    text-align: center;
+    color: white;
+    width: 25%;
+    margin: 0 auto;
+    letter-spacing: 5px;
+}
