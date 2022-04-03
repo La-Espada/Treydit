@@ -9,6 +9,7 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +21,8 @@ import java.util.List;
 @Entity
 @Table(name = "treyder")
 public class Treyder extends AbstractPersistable<Long> {
-
+    private LocalDateTime created;
+    private LocalDateTime updated;
     private String firstname;
     private String lastname;
     @Enumerated(EnumType.STRING)

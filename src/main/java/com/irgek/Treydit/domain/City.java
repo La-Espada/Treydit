@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +23,8 @@ import java.util.List;
 @Entity
 @Table (name = "city")
 public class City extends AbstractPersistable<Long> {
+    private LocalDateTime created;
+    private LocalDateTime updated;
     private String name;
     @ManyToOne
     private Country country;
