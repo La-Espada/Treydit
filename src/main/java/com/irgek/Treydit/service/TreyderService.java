@@ -32,49 +32,8 @@ public class TreyderService {
         Treyder newTreyder = null;
         LocalDateTime created = temporalValueFactory.created_at();
 
-        /*
-        if (firstname == null) {
-            throw new IllegalArgumentException("Name " + CANNOT_BE_NULL);
-        } else if (firstname.isBlank() || firstname.isEmpty()) {
-            throw new IllegalArgumentException("Firstname " + CANNOT_BE_EMPTY_OR_BLANK);
-        } else if (lastname == null) {
-            throw new IllegalArgumentException("Name " + CANNOT_BE_NULL);
-        }
-        else if (lastname.isBlank() || lastname.isEmpty()) {
-            throw new IllegalArgumentException("Lastname " + CANNOT_BE_EMPTY_OR_BLANK);
-        } else if (gender == null) {
-            throw new IllegalArgumentException("Gender " + CANNOT_BE_NULL);
-        }
-        else if(phonenumber == null){
-            throw new IllegalArgumentException("Phonenumber " + CANNOT_BE_NULL);
-        }
-        else if (username.isBlank() || username.isEmpty()) {
-            throw new IllegalArgumentException("Username " + CANNOT_BE_EMPTY_OR_BLANK);
-        }
-        else if (email.isBlank() || email.isEmpty()) {
-            throw new IllegalArgumentException("Email " + CANNOT_BE_EMPTY_OR_BLANK);
-        }
-        else if(birthDate == null){
-            throw new IllegalArgumentException("Birthdate " + CANNOT_BE_NULL);
-        }
-        else if (birthDate.isAfter(LocalDate.now())){
-            throw new IllegalArgumentException("Birthdate cannot be in the future!");
-        }
-        else if(address == null){
-            throw new IllegalArgumentException("Address " + CANNOT_BE_NULL);
-        }
-        else if (password.isBlank() || password.isEmpty()) {
-            throw new IllegalArgumentException("Username " + CANNOT_BE_EMPTY_OR_BLANK);
-        }
-        else if(role == null){
-            throw new IllegalArgumentException("Role " + CANNOT_BE_NULL);
-        }
-        else if(city == null){
-            throw new IllegalArgumentException("City " + CANNOT_BE_NULL);
-        }
-        */
         try{
-            var treyder = treyderRepository.findTreyderByUsername(mutateTreyderCommand.username);
+            var treyder = treyderRepository.findTreyderByUsername(mutateTreyderCommand.getUsername());
             if(treyder.isPresent()){
                 return treyder.get();
             }
@@ -135,20 +94,79 @@ public class TreyderService {
 
     public Treyder replaceTreyder(Long id, MutateTreyderCommand mutateTreyderCommand){
         Optional<Treyder> treyder = treyderRepository.findTreyderById(id);
+        LocalDateTime  updated = temporalValueFactory.replaced_at();
         Treyder treyder1 = null;
-        LocalDateTime  created = temporalValueFactory.replaced_at();
-
-        return treyder1;
+        if(treyder.isPresent()){
+            treyder1 = treyder.get();
+        }
+        try{
+            treyder1.setFirstname(mutateTreyderCommand.getFirstname());
+            treyder1.setLastname(mutateTreyderCommand.getLastname());
+            treyder1.setAddress(mutateTreyderCommand.getAddress());
+            treyder1.setBirthDate(mutateTreyderCommand.getBirthDate());
+            treyder1.setCity(mutateTreyderCommand.getCity());
+            treyder1.setEmail(mutateTreyderCommand.getEmail());
+            treyder1.setGender(mutateTreyderCommand.getGender());
+            treyder1.setPhonenumber(mutateTreyderCommand.getPhonenumber());
+            treyder1.setPassword(mutateTreyderCommand.getPassword());
+            treyder1.setUpdated(updated);
+            return treyderRepository.save(treyder1);
+        }
+        catch(PersistenceException ex){
+            throw ServiceException.cannotUpdateEntity(treyder1,ex);
+        }
     }
 
+    public Treyder paritallyUpdate(Long id, MutateTreyderCommand mutateTreyderCommand){
+        Optional<Treyder> entity = treyderRepository.findTreyderById(id);
+        LocalDateTime partiallyUpdated = temporalValueFactory.replaced_at();
+        Treyder treyder = null;
+
+        if(entity.isPresent()) {
+            treyder = entity.get();
+            if (mutateTreyderCommand.getFirstname() != null) {
+                treyder.setFirstname(mutateTreyderCommand.getFirstname());
+            }
+            if (mutateTreyderCommand.getLastname() != null) {
+                treyder.setLastname(mutateTreyderCommand.getLastname());
+            }
+            if (mutateTreyderCommand.getAddress() != null) {
+                treyder.setAddress(mutateTreyderCommand.getAddress());
+            }
+            if (mutateTreyderCommand.getBirthDate() != null) {
+                treyder.setCity(mutateTreyderCommand.getCity());
+            }
+            if (mutateTreyderCommand.getGender() != null) {
+                treyder.setGender(mutateTreyderCommand.getGender());
+            }
+            if (mutateTreyderCommand.getPassword() != null) {
+                treyder.setPassword(mutateTreyderCommand.getPassword());
+            }
+            if (mutateTreyderCommand.getPhonenumber() != null) {
+                treyder.setPhonenumber(mutateTreyderCommand.getPhonenumber());
+            }
+            treyder.setUpdated(partiallyUpdated);
+            return treyderRepository.save(treyder);
+        }
+        return entity.get();
+    }
 
 
     public Treyder save(Treyder treyder){
          return treyderRepository.save(treyder);
     }
 
-    public void deleteTreyder(Treyder treyder){
-        treyderRepository.delete(treyder);
+    public void deleteTreyder(Long id){
+        Treyder treyder = null;
+        Optional<Treyder> entity = treyderRepository.findTreyderById(id);
+        try{
+            if(entity.isPresent()){
+                treyder = entity.get();
+                treyderRepository.delete(treyder);
+            }
+        }catch(PersistenceException ex){
+            throw ServiceException.cannotDeleteEntity(treyder,ex);
+        }
     }
 
     public void deleteTreyders(){

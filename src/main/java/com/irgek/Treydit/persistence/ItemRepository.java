@@ -10,5 +10,6 @@ import java.util.Optional;
 @Repository
 public interface ItemRepository extends JpaRepository<Item, ItemRepositoryCustom>, QuerydslPredicateExecutor<Item>, ItemRepositoryCustom {
     Optional<Item> countItemByCategory(Category category);
+    Optional<Item> findItemById(Long id);
     Optional<Item> findItemByName(String name);
 }
