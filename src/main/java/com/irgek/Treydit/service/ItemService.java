@@ -18,6 +18,7 @@ import javax.persistence.PersistenceException;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -127,9 +128,10 @@ public class ItemService {
     public Item partiallyUpdate(Long id, MutateItemCommand itemCommand){
         Optional<Item> items = itemRepository.findItemById(id);
         LocalDateTime partiallyUpdated = temporalValueFactory.replaced_at();
+        Item item = null;
 
         if(items.isPresent()){
-            Item item = items.get();
+               item = items.get();
             if(itemCommand.getName() != null){
                 item.setName(itemCommand.getName());
             }
@@ -139,12 +141,49 @@ public class ItemService {
             if(itemCommand.getCategory() != null){
                 item.setCategory(itemCommand.getCategory());
             }
+            if(itemCommand.getDescription() != null){
+                item.setDescription(itemCommand.getDescription());
+            }
+            if(itemCommand.getTreyder() != null){
+                item.setTreyder(itemCommand.getTreyder());
+            }
+
            /* if(itemCommand.getCost() != null){
                 item.setCost(itemCommand.getCost());
             }
 
             */
+            }
+            item.setUpdated(partiallyUpdated);
+            return items.get();
         }
-    }
+
+        public void deleteItem(Long id){
+            Item item = null;
+            Optional<Item> entity = itemRepository.findItemById(id);
+            try{
+                if(entity.isPresent()){
+                    item = entity.get();
+                    itemRepository.delete(item);
+                }
+              }catch(PersistenceException ex){
+                throw ServiceException.cannotDeleteEntity(item,ex);
+              }
+        }
+
+        public void deleteItem(){
+            itemRepository.deleteAll();
+        }
+
+        public Optional<Item> getItembyId(Long id){
+         return itemRepository.findItemById(id);
+        }
+
+        public Item save(Item item){
+            return itemRepository.save(item);
+        }
+        public List<Item> getItems(){
+        return itemRepository.findAll();
+        }
 
 }
