@@ -1,0 +1,16 @@
+POST http://localhost:8080/api/registration
+Content-Type: application/json
+Accept: application/json
+
+{
+"firstName": "Cemil",
+"lastName": "Aslan",
+  "username": "Turkikaze",
+  "password": "password",
+  "email": "wiktorramian@gmail.com",
+  "birtDate": "2002-03-20",
+  "gender": "MALE"
+}
+
+###
+GET http://localhost:8080/api/registration/confirm?token=fe68f06f-2931-4a92-9de1-e445998fe934

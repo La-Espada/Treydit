@@ -26,11 +26,15 @@ public class QCity extends EntityPathBase<City> {
 
     public final QCountry country;
 
+    public final DateTimePath<java.time.LocalDateTime> created = createDateTime("created", java.time.LocalDateTime.class);
+
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
     public final StringPath name = createString("name");
 
     public final ListPath<Treyder, QTreyder> treyders = this.<Treyder, QTreyder>createList("treyders", Treyder.class, QTreyder.class, PathInits.DIRECT2);
+
+    public final DateTimePath<java.time.LocalDateTime> updated = createDateTime("updated", java.time.LocalDateTime.class);
 
     public QCity(String variable) {
         this(City.class, forVariable(variable), INITS);

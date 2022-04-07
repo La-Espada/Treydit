@@ -19,7 +19,7 @@ public class QPhonenumber extends BeanPath<Phonenumber> {
 
     public static final QPhonenumber phonenumber = new QPhonenumber("phonenumber");
 
-    public final NumberPath<Integer> country_code = createNumber("country_code", Integer.class);
+    public final StringPath country_code = createString("country_code");
 
     public final StringPath serialnumber = createString("serialnumber");
 

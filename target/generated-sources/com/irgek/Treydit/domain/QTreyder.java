@@ -30,6 +30,8 @@ public class QTreyder extends EntityPathBase<Treyder> {
 
     public final QCity city;
 
+    public final DateTimePath<java.time.LocalDateTime> created = createDateTime("created", java.time.LocalDateTime.class);
+
     public final StringPath email = createString("email");
 
     public final StringPath firstname = createString("firstname");
@@ -44,11 +46,13 @@ public class QTreyder extends EntityPathBase<Treyder> {
 
     public final StringPath password = createString("password");
 
-    public final QPhonenumber phonenumber;
+    public final StringPath phonenumber = createString("phonenumber");
 
     public final EnumPath<Reputation> reputation = createEnum("reputation", Reputation.class);
 
     public final EnumPath<Role> role = createEnum("role", Role.class);
+
+    public final DateTimePath<java.time.LocalDateTime> updated = createDateTime("updated", java.time.LocalDateTime.class);
 
     public final StringPath username = createString("username");
 
@@ -72,7 +76,6 @@ public class QTreyder extends EntityPathBase<Treyder> {
         super(type, metadata, inits);
         this.address = inits.isInitialized("address") ? new QAddress(forProperty("address")) : null;
         this.city = inits.isInitialized("city") ? new QCity(forProperty("city"), inits.get("city")) : null;
-        this.phonenumber = inits.isInitialized("phonenumber") ? new QPhonenumber(forProperty("phonenumber")) : null;
     }
 
 }

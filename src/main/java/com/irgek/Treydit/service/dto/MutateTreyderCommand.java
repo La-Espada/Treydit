@@ -1,6 +1,7 @@
 package com.irgek.Treydit.service.dto;
 
 import com.irgek.Treydit.domain.*;
+import lombok.Builder;
 import lombok.Getter;
 
 
@@ -9,6 +10,7 @@ import java.time.LocalDateTime;
 
 
 @Getter
+@Builder
 public class MutateTreyderCommand {
     private LocalDateTime created;
     private LocalDateTime updated;

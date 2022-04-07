@@ -28,6 +28,8 @@ public class QItem extends EntityPathBase<Item> {
 
     public final NumberPath<Double> cost = createNumber("cost", Double.class);
 
+    public final DateTimePath<java.time.LocalDateTime> created = createDateTime("created", java.time.LocalDateTime.class);
+
     public final StringPath description = createString("description");
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
@@ -37,6 +39,8 @@ public class QItem extends EntityPathBase<Item> {
     public final StringPath name = createString("name");
 
     public final QTreyder treyder;
+
+    public final DateTimePath<java.time.LocalDateTime> updated = createDateTime("updated", java.time.LocalDateTime.class);
 
     public QItem(String variable) {
         this(Item.class, forVariable(variable), INITS);

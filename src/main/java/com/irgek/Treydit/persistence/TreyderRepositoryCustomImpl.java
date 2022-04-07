@@ -42,7 +42,7 @@ public class TreyderRepositoryCustomImpl extends QuerydslRepositorySupport imple
                 Treyder treyder = new Treyder();
                 treyder.setFirstname((String) rs.getObject("Firstname"));
                 treyder.setLastname((String) rs.getObject("Lastname"));
-                treyder.setUsername(rs.getString("Username"));
+                //treyder.setUsername(rs.getString("Username"));
                 treyder.setGender((Gender) rs.getObject("Gender"));
                 treyder.setBirthDate(rs.getDate("LocalDate").toLocalDate());
                 treyder.setEmail(rs.getString("Email"));
