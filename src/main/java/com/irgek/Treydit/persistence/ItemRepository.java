@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface ItemRepository extends JpaRepository<Item, ItemRepositoryCustom>, QuerydslPredicateExecutor<Item>, ItemRepositoryCustom {
+public interface ItemRepository extends JpaRepository<Item, Long> {
     Optional<Item> countItemByCategory(Category category);
     Optional<Item> findItemById(Long id);
     Optional<Item> findItemByName(String name);

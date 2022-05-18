@@ -2,5 +2,9 @@ package com.irgek.Treydit.domain;
 
 public enum Reputation {
     A,
-    B
+    B,
+    C,
+    D,
+    E,
+    F
 }

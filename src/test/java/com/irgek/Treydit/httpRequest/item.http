@@ -1,0 +1,15 @@
+POST http://localhost:8080/api/item/add
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Mobile Phone",
+  "cost": 120.0,
+  "description": "alksnmjdlksamdlksamdklsamdlksmdlkmdlkasmdlksamdsmkldmlsak",
+  "itemCondition": "GOD",
+  "category": "PHONE"
+}
+
+###
+
+GET http://localhost:8080/api/item/

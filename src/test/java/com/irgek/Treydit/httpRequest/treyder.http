@@ -1,0 +1,16 @@
+POST http://localhost:8080/api/treyder/add
+Content-Type: application/json
+Accept: application/json
+
+{
+  "id": "1",
+  "username": "Turkikaze",
+  "email": "aslancemil09@gmail.com",
+  "password": "asdsadsdsdasd",
+  "firstname": "Cemil",
+  "lastname": "Aslan",
+  "gender": "MALE",
+  "phonenumber": "436641840791"
+}
+
+####
