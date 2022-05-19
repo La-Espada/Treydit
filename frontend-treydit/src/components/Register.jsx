@@ -1,16 +1,13 @@
 import React, { useRef, useState } from 'react'
 import Form from "react-validation/build/form";
-import Input from "react-validation/build/input";
-import CheckButton from "react-validation/build/button";
 import { isEmail } from "validator";
 import AuthService from "../services/auth.service";
 import {
-  ChakraProvider,
+  Input,
   InputGroup,
   InputLeftAddon,
   InputRightElement,
-  Icon,
-  Container,
+ Container,
   Heading,
   Stack,
   Select,
@@ -127,7 +124,7 @@ const handleRegister = (e) =>{
     setMessage("");
     setSuccessful(false);
     form.current.validateAll();
-    if(checkBtn.current.context._error.length == 0){
+    if(checkBtn.current.context._error.length === 0){
         AuthService.register(username,email,password,firstname,lastname,gender,phonenumber).then(
             (response) => {
                 setMessage(response.data.message);
@@ -143,8 +140,7 @@ const handleRegister = (e) =>{
 };
 
 return (
-  <ChakraProvider resetCSS>
-    <Container
+<Container
       textAlign="center"
       borderRadius={5}
       backgroundColor="#000000"
@@ -160,6 +156,17 @@ return (
         color="#ffffff"
       >
         <InputGroup onSubmit={handleRegister} ref={form} mb={5}>
+        <InputLeftAddon backgroundColor="#000000" color="#ffffff">
+            Username
+          </InputLeftAddon>
+          <Input
+           name="username"
+           value={username}
+           onChange={onChangeUsername}
+           validations = {[required,vusername]}
+            bgGradient="linear(to right, #fdfdfd,#aeaeae)"
+            color="#000000"
+          />
           <InputLeftAddon backgroundColor="#000000" color="#ffffff">
             First name
           </InputLeftAddon>
@@ -280,7 +287,7 @@ return (
         </Grid>
       </Container>
     </Container>
-  </ChakraProvider>
+    
 )
 };
 

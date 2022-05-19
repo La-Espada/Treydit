@@ -2,8 +2,6 @@ package com.irgek.Treydit.security;
 
 import com.irgek.Treydit.filter.CustomAuthenticationFilter;
 import com.irgek.Treydit.filter.CustomAuthoizationFilter;
-import com.irgek.Treydit.security.jwt.AuthEntryPointJwt;
-import com.irgek.Treydit.security.jwt.AuthTokenFilter;
 import com.irgek.Treydit.service.TreyderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,10 +29,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService treyderService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    @Bean
-    public AuthTokenFilter authenticationJwtTokenFilter(){
-        return new AuthTokenFilter();
-    }
+
 
     @Override
     protected void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {

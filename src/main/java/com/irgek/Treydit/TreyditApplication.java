@@ -28,15 +28,15 @@ public class TreyditApplication {
 	@Bean
 	CommandLineRunner run(TreyderService treyderService){
 		return args -> {
-			/*treyderService.saveRole(new Role(null, "ROLE_TREYDR"));
+			treyderService.saveRole(new Role(null, "ROLE_TREYDR"));
 			treyderService.saveRole(new Role(null, "ROLE_ADMIN"));
 			treyderService.saveRole(new Role(null, "ROLE_MODERATOR"));
 
 			treyderService.saveTreyder(new Treyder(null,"arschloch","aslanemil09@gmail.com","asdsadsdsdasd","Cemil","Aslan",Gender.MALE,"436641840791"));
 
 			treyderService.addRoleToTreyder("arschloch","ROLE_TREYDR");
-		*/
-			//treyderService.saveTreyder(new Treyder(null, "turkikaze", "aslancemil09@gmail.com", "asdsadsdsdasd", "Cemil", "Aslan", Gender.MALE, "436641840791"));
+
+			treyderService.saveTreyder(new Treyder(null, "turkikaze", "aslancemil09@gmail.com", "asdsadsdsdasd", "Cemil", "Aslan", Gender.MALE, "436641840791"));
 			treyderService.addRoleToTreyder("turkikaze","ROLE_TREYDR");
 		};
 	}
