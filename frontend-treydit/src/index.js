@@ -3,14 +3,16 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import Register from './components/Register';
+import Register from './components/register/Register';
 import { ChakraProvider } from '@chakra-ui/react';
+import Dashboard from './components/dashboard/dashboard';
+import LandingPage from './components/landingPage/LandingPage';
 
 
 ReactDOM.render(
   <React.StrictMode>
   <ChakraProvider>
-    <Register/>
+    <LandingPage/>
   </ChakraProvider>
   </React.StrictMode>,
   document.getElementById('root')
