@@ -13,8 +13,11 @@ import {
   Text
 } from '@chakra-ui/react'
 import { CopyIcon } from '@chakra-ui/icons'
+import { useNavigate } from 'react-router-dom'
 
-const Login = () => (
+function Login() {
+  let navigate = useNavigate()
+return(
   <ChakraProvider resetCSS>
     <Container
       textAlign="center"
@@ -75,6 +78,7 @@ const Login = () => (
             borderRadius={8}
             backgroundColor="#028aff"
             color="#ffffff"
+            onClick={()=>navigate('/dashboard')}
           >
             Login
           </Button>
@@ -86,5 +90,5 @@ const Login = () => (
     </Container>
   </ChakraProvider>
 )
-
+}
 export default Login

@@ -12,7 +12,7 @@ import LandingPage from './components/landingPage/LandingPage';
 ReactDOM.render(
   <React.StrictMode>
   <ChakraProvider>
-    <LandingPage/>
+    <App/>
   </ChakraProvider>
   </React.StrictMode>,
   document.getElementById('root')

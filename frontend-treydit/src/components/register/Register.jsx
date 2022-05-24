@@ -16,6 +16,7 @@ import {
   Button
 } from '@chakra-ui/react'
 import { CopyIcon, ChevronDownIcon } from '@chakra-ui/icons'
+import { useNavigate } from 'react-router-dom';
 
 
 const required = (value) =>{
@@ -138,6 +139,8 @@ const handleRegister = (e) =>{
         );
     }
 };
+
+let navigate = useNavigate();
 
 return (
 <Container
@@ -281,6 +284,7 @@ return (
             borderRadius={8}
             backgroundColor="#028aff"
             color="#ffffff"
+            onClick={()=> navigate('/login')}
           >
             Save
           </Button>

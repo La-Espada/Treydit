@@ -1,11 +1,15 @@
 import react from "react"
 import reactDOM from "react-dom"
 import styles from "./landing.module.css"
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Switch, useNavigate } from "react-router-dom";
 import {NavLink} from "react-router-dom";
 
-export default function Landing(){
 
+
+
+
+export default function Landing(){
+let navigate = useNavigate();
 
     return(
 
@@ -19,7 +23,7 @@ export default function Landing(){
                  <pre className={styles.last}>your last exchange platform</pre>
                  <div className={styles.button}>
 
-              <button>get started now</button>
+                    <button onClick={()=> navigate('/register')}>get started now</button>
                     <button>about us</button>
 
 
