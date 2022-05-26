@@ -7,22 +7,30 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.irgek.Treydit.domain.*;
-import com.irgek.Treydit.service.TreyderService;
+import com.irgek.Treydit.payload.request.LoginRequest;
+import com.irgek.Treydit.payload.request.SignupRequest;
+import com.irgek.Treydit.payload.response.JwtResponse;
+import com.irgek.Treydit.payload.response.MessageResponse;
+import com.irgek.Treydit.persistence.RoleRepository;
+import com.irgek.Treydit.persistence.TreyderRepository;
+import com.irgek.Treydit.security.jwt.JwtUtils;
+import com.irgek.Treydit.service.TreyderServiceImpl;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.io.IOException;
 import java.net.URI;
 import java.util.*;
@@ -41,7 +49,18 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @CrossOrigin("*")
 public class TreyderRestController {
 
-    private final TreyderService treyderService;
+    @Autowired
+    AuthenticationManager authenticationManager;
+    @Autowired
+    JwtUtils jwtUtils;
+    @Autowired
+    PasswordEncoder encoder;
+    @Autowired
+    TreyderRepository treyderRepository;
+    @Autowired
+    RoleRepository roleRepository;
+
+    private final TreyderServiceImpl treyderService;
 
 
     @GetMapping("/treyder")
@@ -49,10 +68,77 @@ public class TreyderRestController {
         return ResponseEntity.ok().body(treyderService.getTreyder());
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest){
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(),loginRequest.getPassword()));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String jwt = jwtUtils.generateJwtToken(authentication);
+
+
+        Treyder treyder = (Treyder) authentication.getPrincipal();
+        List<String> roles = treyder.getAuthorities().stream()
+                .map(item-> item.getAuthority())
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(new JwtResponse(jwt,treyder.getId(),treyder.getUsername(),treyder.getEmail(),roles));
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<?> registerTreyder(@Valid @RequestBody SignupRequest signupRequest){
+        if(treyderRepository.existsByUsername(signupRequest.getUsername())){
+            return ResponseEntity.
+                    badRequest()
+                    .body(new MessageResponse("Error: Username is already taken!"));
+        }
+        if(treyderRepository.existsByEmail(signupRequest.getEmail())){
+            return ResponseEntity.
+                    badRequest()
+                    .body(new MessageResponse("Error: Email is already in use!"));
+        }
+
+        Treyder treyder = new Treyder(signupRequest.getUsername(),signupRequest.getEmail(),encoder.encode(signupRequest.getPassword()),
+                signupRequest.getFirstname(),signupRequest.getLastname(),signupRequest.getGender(),signupRequest.getPhonenumber());
+        Set<String> strRoles = signupRequest.getRole();
+        Set<Role> roles = new HashSet<>();
+        if (strRoles == null) {
+            Role userRole = roleRepository.findByName(String.valueOf(ERole.ROLE_TREYDR));
+                    //.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+            roles.add(userRole);
+        }
+        else{
+            strRoles.forEach(role -> {
+                switch (role) {
+                    case "admin":
+                        Role adminRole = roleRepository.findByName(String.valueOf(ERole.ROLE_ADMIN));
+                                //.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                        roles.add(adminRole);
+                        break;
+                    case "mod":
+                        Role modRole = roleRepository.findByName(String.valueOf(ERole.ROLE_MODERATOR));
+                                //.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                        roles.add(modRole);
+                        break;
+                    default:
+                        Role userRole = roleRepository.findByName(String.valueOf(ERole.ROLE_TREYDR));
+                                //.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                        roles.add(userRole);
+                }
+            });
+        }
+        treyder.setRoles(roles);
+        treyderRepository.save(treyder);
+        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+    }
+
     @PostMapping("/treyder/add")
     public ResponseEntity<Treyder> addTreyder(@RequestBody Treyder treyder) {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/treyder/add").toUriString());
         return ResponseEntity.created(uri).body(treyderService.saveTreyder(treyder));
+    }
+
+    @GetMapping("/treyder/{id}")
+    public Treyder getTreyder(@PathVariable Long id) {
+        return treyderRepository.findTreyderById(id);
     }
 
     @PostMapping("/role/add")

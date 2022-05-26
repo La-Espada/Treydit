@@ -1,21 +1,21 @@
 import axios from "axios";
 const API_URL = "http://localhost:8080/api"
-const getPublicContent = () => {
-  return axios.get(API_URL + "/treyder");
-};
-const getUserBoard = () => {
-  return axios.get(API_URL + "user");
-};
-const getModeratorBoard = () => {
-  return axios.get(API_URL + "mod");
-};
-const getAdminBoard = () => {
-  return axios.get(API_URL + "admin");
-};
-const UserService = {
-  getPublicContent,
-  getUserBoard,
-  getModeratorBoard,
-  getAdminBoard,
+
+class TreyderServices{
+
+  getAllTreyder(){
+    return axios.get(API_URL + "/treyder");
+  }
+
+  getTreyderBoard(){
+    return axios.get(API_URL + "/",{ headers: authHeader() })
+  }
+  getModeratorBoard() {
+    return axios.get(API_URL + 'mod', { headers: authHeader() });
+  }
+  getAdminBoard() {
+    return axios.get(API_URL + 'admin', { headers: authHeader() });
+  }
 }
-export default UserService;
+
+export default new TreyderServices;

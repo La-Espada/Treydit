@@ -46,9 +46,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         CustomAuthenticationFilter customAuthenticationFilter  =  new CustomAuthenticationFilter(authenticationManagerBean());
         customAuthenticationFilter.setFilterProcessesUrl("/api/login");
+        customAuthenticationFilter.setFilterProcessesUrl("/api/register");
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.authorizeRequests().antMatchers("/api/login/**", "/api/token/refresh/**").permitAll();
+        http.authorizeRequests().antMatchers("/api/login/**","/api/register/**" ,"/api/token/refresh/**").permitAll();
         http.authorizeRequests().antMatchers(HttpMethod.GET,"/api/treyder/**").hasAnyAuthority("ROLE_TREYDR");
         http.authorizeRequests().antMatchers(HttpMethod.POST,"/api/treyder/save/**").hasAnyAuthority("ROLE_ADMIN");
         http.authorizeRequests().anyRequest().authenticated();

@@ -13,6 +13,9 @@ import java.util.Optional;
 @Repository
 public interface TreyderRepository extends JpaRepository<Treyder, Long> {
     Treyder findTreyderByUsername(String username);
+    Treyder findTreyderById (Long id);
+    Boolean existsByEmail(String email);
+    Boolean existsByUsername(String username);
     Optional<Treyder> findTreyderByEmail(String email);
-    Optional<Treyder> findTreyderById(Long id);
+
 }

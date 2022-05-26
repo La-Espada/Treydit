@@ -2,11 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
+import axios from 'axios';
 import reportWebVitals from './reportWebVitals';
 import Register from './components/register/Register';
 import { ChakraProvider } from '@chakra-ui/react';
 import Dashboard from './components/dashboard/dashboard';
 import LandingPage from './components/landingPage/LandingPage';
+
+
 
 
 ReactDOM.render(

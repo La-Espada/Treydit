@@ -19,6 +19,7 @@ import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor
@@ -69,8 +70,8 @@ public class Treyder implements UserDetails  {
     private LocalDateTime created;
     private LocalDateTime updated;
 
-    public Treyder(Long id, String username, String email, String password, String firstname, String lastname, Gender gender, String phonenumber) {
-        this.id = id;
+
+    public Treyder( String username, String email, String password, String firstname, String lastname, Gender gender, String phonenumber) {
         this.username = username;
         this.email = email;
         this.password = password;
@@ -78,6 +79,33 @@ public class Treyder implements UserDetails  {
         this.lastname = lastname;
         this.gender = gender;
         this.phonenumber = phonenumber;
+    }
+
+
+    public Treyder( String username, String email, String password, String firstname, String lastname, Gender gender, String phonenumber,Collection<? extends GrantedAuthority> authorities) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.gender = gender;
+        this.phonenumber = phonenumber;
+    }
+
+    public static Treyder build(Treyder user) {
+        List<GrantedAuthority> authorities = user.getRoles().stream()
+                .map(role -> new SimpleGrantedAuthority(role.getName()))
+                .collect(Collectors.toList());
+
+        return new Treyder(
+                user.getUsername(),
+                user.getEmail(),
+                user.getPassword(),
+                user.getFirstname(),
+                user.getLastname(),
+                user.getGender(),
+                user.getPhonenumber(),
+                authorities);
     }
 
     @Override

@@ -30,7 +30,7 @@ public class TreyderServiceImpl implements TreyderService, UserDetailsService {
 
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public Treyder loadUserByUsername(String username) throws UsernameNotFoundException {
         Treyder treyder = treyderRepository.findTreyderByUsername(username);
         if(treyder == null){
             log.error("Treyder not found in the database");
@@ -44,7 +44,7 @@ public class TreyderServiceImpl implements TreyderService, UserDetailsService {
         treyder.getRoles().forEach(role -> {
             authorities.add(new SimpleGrantedAuthority(role.getName()));
         });
-        return new org.springframework.security.core.userdetails.User(treyder.getUsername(),treyder.getPassword(),authorities);
+        return Treyder.build(treyder);
     }
     @Override
     public Treyder saveTreyder(Treyder treyder) {
@@ -67,6 +67,8 @@ public class TreyderServiceImpl implements TreyderService, UserDetailsService {
 
     }
 
+
+
     @Override
     public Treyder getTreyder(String username) {
         log.info("Fetching treyder {} ", username);
@@ -78,6 +80,8 @@ public class TreyderServiceImpl implements TreyderService, UserDetailsService {
         log.info("Fetching all treyders");
         return treyderRepository.findAll();
     }
+
+
 
 
 }

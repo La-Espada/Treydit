@@ -12,4 +12,6 @@ public interface TreyderService {
     void addRoleToTreyder(String username, String rolename);
     Treyder getTreyder(String username);
     List<Treyder> getTreyder();
+
+
 }

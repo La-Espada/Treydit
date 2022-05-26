@@ -1,36 +1,36 @@
 import axios from "axios";
-const API_URL = "http:/localhost:8080/api";
-const register = (username,email,password,firstname,lastname,gender,phonenumber)=>{
-    return axios.prototype(API_URL + "/treyder/add",{
-        username,email,password,firstname,lastname,gender,phonenumber
-    });
-};
-const login = (username, password) => {
-    return axios
-      .post(API_URL + "/login", {
-        username,
-        password,
-      })
-      .then((response) => {
-        if (response.data.username) {
-          localStorage.setItem("treyder", JSON.stringify(response.data));
-        }
-        return response.data;
-      });
-  };
-  const logout = () => {
-    localStorage.removeItem("treyder");
-    return axios.post(API_URL + "/signout").then((response) => {
+const API_URL = "http://localhost:8080/api";
+
+class AuthService{
+  login(username,password){
+    return axios.post(API_URL + "/login",{
+      username,
+      password
+    })
+    .then(response => {
+      if (response.data.accessToken){
+        localStorage.setItem("treyder", JSON.stringify(response.data));
+      }
       return response.data;
     });
-  };
-  const getCurrentUser = () => {
-    return JSON.parse(localStorage.getItem("treyder"));
-  };
-  const AuthService = {
-    register,
-    login,
-    logout,
-    getCurrentUser,
   }
-export default AuthService;
+  logout(){
+    localStorage.removeItem("treyder");
+  }
+  register(username,firstname,lastname,email,gender,phonenumber,password){
+    return axios.post(API_URL + "/register",{
+      username,
+      email,
+      password,
+      firstname,
+      lastname,
+      gender,
+      phonenumber
+    });
+  }
+  getCurrentUser(){
+    return JSON.parse(localStorage.getItem("treyder"))
+  }
+
+}
+export default new AuthService();
