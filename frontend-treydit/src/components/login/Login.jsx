@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useState} from 'react'
 import {
   ChakraProvider,
   InputGroup,
@@ -16,7 +16,30 @@ import { CopyIcon } from '@chakra-ui/icons'
 import { useNavigate } from 'react-router-dom'
 
 function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
   let navigate = useNavigate()
+
+  async function login(){
+    console.warn(email,password);
+    let item = {email,password};
+    let result = await fetch("http://localhost:8080/api/login",{
+      method:'POST',
+      headers:{
+        "Content-Type":"application/json",
+        "Accept":"application/json",
+      },
+      body:JSON.stringify(item)
+    }).then(response => {
+      if(response.ok){
+        navigate("/dashboard")
+      }
+      throw new Error("Something went wrong...")
+    });
+    result = await result.json();
+    localStorage.setItem("user-info",JSON.stringify(result))
+  }
 return(
   <ChakraProvider resetCSS>
     <Container
@@ -43,6 +66,9 @@ return(
             <CopyIcon name="email" />
           </InputRightElement>
           <Input
+            name="Email"
+            placeholder='email'
+            onChange={(e)=> setEmail(e.target.value)}
             bgGradient="linear(to right, #ffffff,#aeaeae)"
             color="#000000"
           />
@@ -52,9 +78,12 @@ return(
             Password
           </InputLeftAddon>
           <InputRightElement>
-            <CopyIcon name="email" />
+            <CopyIcon name="password" />
           </InputRightElement>
           <Input
+            name="Password"
+            placeholder='password'
+            onChange={(e)=> setPassword(e.target.value)}
             bgGradient="linear(to right, #ffffff,#aeaeae)"
             color="#000000"
           />
@@ -78,12 +107,12 @@ return(
             borderRadius={8}
             backgroundColor="#028aff"
             color="#ffffff"
-            onClick={()=>navigate('/dashboard')}
+            onClick={login}
           >
             Login
           </Button>
           <Text textAlign="left" display="inline-block">
-            Don't have an account. Register here.
+            Don't have an account. Register <a onClick={()=>navigate('/register')}>here.</a>
           </Text>
         </Grid>
       </Container>

@@ -16,6 +16,6 @@ public interface TreyderRepository extends JpaRepository<Treyder, Long> {
     Treyder findTreyderById (Long id);
     Boolean existsByEmail(String email);
     Boolean existsByUsername(String username);
-    Optional<Treyder> findTreyderByEmail(String email);
+    Treyder findTreyderByEmail(String email);
 
 }

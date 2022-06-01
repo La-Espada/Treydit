@@ -47,7 +47,7 @@ function Register(){
       body:JSON.stringify(item)
     }).then(response => {
       if(response.ok){
-        navigate("/dashboard")
+        navigate("/login")
       }
       throw new Error("Something went wrong...")
     });

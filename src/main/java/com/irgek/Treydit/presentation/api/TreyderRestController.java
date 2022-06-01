@@ -91,8 +91,8 @@ public class TreyderRestController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest){
-        if(treyderRepository.existsByUsername(loginRequest.getUsername())){
-            Treyder treyder = treyderService.getTreyder(loginRequest.getUsername());
+        if(treyderRepository.existsByEmail(loginRequest.getEmail())){
+            Treyder treyder = treyderRepository.findTreyderByEmail(loginRequest.getEmail());
             if(treyder.getPassword().equals(loginRequest.getPassword())){
                 return ResponseEntity.ok(new MessageResponse("Login successfully!"));
             }
