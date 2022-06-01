@@ -100,6 +100,22 @@ public class TreyderRestController {
         }
         return ResponseEntity.badRequest().body(new MessageResponse("User doesnt exists!"));
     }
+
+    @PostMapping("/{id}/addItem")
+    public ResponseEntity<?> addItemtoUser(@Valid @PathVariable("id") Long id){
+
+        List<Item> items = null;
+        Treyder treyder = treyderRepository.findTreyderById(id);
+        if(treyder == null){
+            log.error("No right user");
+        }
+        else {
+        items = treyder.getItems();
+        }
+
+        return ResponseEntity.ok(new MessageResponse("Login successfully!"));
+
+    }
     /*@PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest){
         Authentication authentication = authenticationManager.authenticate(
