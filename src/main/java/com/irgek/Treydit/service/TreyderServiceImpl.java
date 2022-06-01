@@ -6,11 +6,11 @@ import com.irgek.Treydit.persistence.RoleRepository;
 import com.irgek.Treydit.persistence.TreyderRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+/*import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;*/
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -23,13 +23,13 @@ import java.util.Optional;
 @Service
 @Transactional
 @Slf4j
-public class TreyderServiceImpl implements TreyderService, UserDetailsService {
+public class TreyderServiceImpl implements TreyderService {
     private final TreyderRepository treyderRepository;
     private final RoleRepository roleRepository;
-    private final PasswordEncoder passwordEncoder;
+    //private final PasswordEncoder passwordEncoder;
 
 
-    @Override
+    /*@Override
     public Treyder loadUserByUsername(String username) throws UsernameNotFoundException {
         Treyder treyder = treyderRepository.findTreyderByUsername(username);
         if(treyder == null){
@@ -45,11 +45,11 @@ public class TreyderServiceImpl implements TreyderService, UserDetailsService {
             authorities.add(new SimpleGrantedAuthority(role.getName()));
         });
         return Treyder.build(treyder);
-    }
+    }*/
     @Override
     public Treyder saveTreyder(Treyder treyder) {
         log.info("Saving new treyder {} to the database", treyder.getUsername());
-        treyder.setPassword(passwordEncoder.encode(treyder.getPassword()));
+        //treyder.setPassword(passwordEncoder.encode(treyder.getPassword()));
         return treyderRepository.save(treyder);
     }
 

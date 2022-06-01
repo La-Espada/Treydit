@@ -1,9 +1,1 @@
-com\irgek\Treydit\service\CountryServiceTest.class
-com\irgek\Treydit\service\TreyderServiceTest.class
-com\irgek\Treydit\persistence\CountryRepositoryTest.class
-com\irgek\Treydit\persistence\TreyderRepositoryTest.class
-com\irgek\Treydit\service\CityServiceTest.class
 com\irgek\Treydit\TreyditApplicationTests.class
-com\irgek\Treydit\persistence\CityRepositoryTest.class
-com\irgek\Treydit\persistence\ItemRepositoryTest.class
-com\irgek\Treydit\service\ItemServiceTest.class

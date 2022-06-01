@@ -13,18 +13,17 @@ import com.irgek.Treydit.payload.response.JwtResponse;
 import com.irgek.Treydit.payload.response.MessageResponse;
 import com.irgek.Treydit.persistence.RoleRepository;
 import com.irgek.Treydit.persistence.TreyderRepository;
-import com.irgek.Treydit.security.jwt.JwtUtils;
 import com.irgek.Treydit.service.TreyderServiceImpl;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
+/*import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;*/
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -46,15 +45,15 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @Slf4j
 @RestController
 @RequestMapping("/api")
-@CrossOrigin("*")
+@CrossOrigin(origins = "http://localhost:3000")
 public class TreyderRestController {
 
-    @Autowired
+    /*@Autowired
     AuthenticationManager authenticationManager;
     @Autowired
-    JwtUtils jwtUtils;
-    @Autowired
-    PasswordEncoder encoder;
+    JwtUtils jwtUtils;*/
+  /*  @Autowired
+    PasswordEncoder encoder;*/
     @Autowired
     TreyderRepository treyderRepository;
     @Autowired
@@ -68,7 +67,40 @@ public class TreyderRestController {
         return ResponseEntity.ok().body(treyderService.getTreyder());
     }
 
+
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@Valid @RequestBody SignupRequest signupRequest){
+
+        if(treyderRepository.existsByEmail(signupRequest.getEmail())){
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: Email ist already in use!"));
+        }
+        if(treyderRepository.existsByUsername(signupRequest.getUsername())){
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: Username ist already in use!"));
+        }
+
+        Treyder treyder =new Treyder(signupRequest.getUsername(),signupRequest.getEmail(),signupRequest.getPassword(),
+                signupRequest.getFirstname(),signupRequest.getLastname(),signupRequest.getGender(),signupRequest.getPhonenumber());
+
+        treyderRepository.save(treyder);
+        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+    }
+
     @PostMapping("/login")
+    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest){
+        if(treyderRepository.existsByUsername(loginRequest.getUsername())){
+            Treyder treyder = treyderService.getTreyder(loginRequest.getUsername());
+            if(treyder.getPassword().equals(loginRequest.getPassword())){
+                return ResponseEntity.ok(new MessageResponse("Login successfully!"));
+            }
+            return ResponseEntity.badRequest().body(new MessageResponse("Wrong password!"));
+        }
+        return ResponseEntity.badRequest().body(new MessageResponse("User doesnt exists!"));
+    }
+    /*@PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest){
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(),loginRequest.getPassword()));
@@ -81,9 +113,9 @@ public class TreyderRestController {
                 .map(item-> item.getAuthority())
                 .collect(Collectors.toList());
         return ResponseEntity.ok(new JwtResponse(jwt,treyder.getId(),treyder.getUsername(),treyder.getEmail(),roles));
-    }
+    }*/
 
-    @PostMapping("/register")
+    /*@PostMapping("/register")
     public ResponseEntity<?> registerTreyder(@Valid @RequestBody SignupRequest signupRequest){
         if(treyderRepository.existsByUsername(signupRequest.getUsername())){
             return ResponseEntity.
@@ -128,7 +160,7 @@ public class TreyderRestController {
         treyder.setRoles(roles);
         treyderRepository.save(treyder);
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
-    }
+    }*/
 
     @PostMapping("/treyder/add")
     public ResponseEntity<Treyder> addTreyder(@RequestBody Treyder treyder) {
@@ -154,7 +186,7 @@ public class TreyderRestController {
 
     }
 
-    @GetMapping("/token/refresh")
+    /*@GetMapping("/token/refresh")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String authorizationHeader = request.getHeader(AUTHORIZATION);
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
@@ -190,7 +222,7 @@ public class TreyderRestController {
 
 
         }
-    }
+    }*/
 }
 
 @Data
