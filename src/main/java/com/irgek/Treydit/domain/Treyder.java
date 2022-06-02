@@ -66,6 +66,8 @@ public class Treyder  {
     @OneToMany
     private List<Item> items = new ArrayList<>();
 
+    private String profilePicture;
+
 
     private LocalDateTime created;
     private LocalDateTime updated;

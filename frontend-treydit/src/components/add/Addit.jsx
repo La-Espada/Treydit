@@ -1,4 +1,6 @@
-import React from 'react'
+import React,{useState} from 'react'
+import { useNavigate, useHistory } from 'react-router-dom';
+
 import {
   ChakraProvider,
   Container,
@@ -13,13 +15,44 @@ import {
   Textarea,
   Divider,
   Image,
+  Text,
+  Select,
+  Stack,
   IconButton,
   SimpleGrid
 } from '@chakra-ui/react'
+import { CopyIcon, ChevronDownIcon } from '@chakra-ui/icons'
+
 import { AddIcon } from '@chakra-ui/icons'
 
-const Addit = () => (
-  <ChakraProvider resetCSS>
+function Addit(){
+  const [name, setName] = useState();
+  const [description, setDescription] = useState();
+  const [cost, setCost] = useState();
+  const [condition, setCondition] = useState();
+  const [category, setCategory] = useState();
+  const [treyderId,setTreyderId] = useState();
+  let navigate = useNavigate();
+
+  async function addit(){
+    console.warn(name,description,cost,condition,category,treyderId);
+    let item = {name,description,cost,condition,category,treyderId};
+    let result = await fetch("http://localhost:8080/api/3/addItem",{
+      method:'POST',
+      headers:{
+        "Content-Type":"application/json",
+        "Accept":"application/json",
+      },
+      body:JSON.stringify(item)
+    }).then(response => {
+      if(response.ok){
+        navigate("/dashboard")
+      }
+    })
+  }
+
+  return(
+<ChakraProvider resetCSS>
     <Container
       textAlign="center"
       borderRadius={5}
@@ -68,16 +101,66 @@ const Addit = () => (
           </FormControl>
           <FormControl mb={5} isRequired>
             <FormLabel>Item name</FormLabel>
-            <Input />
+            <Input onChange={(e)=>setName(e.target.value)} />
             <FormHelperText>Add the name of your item.</FormHelperText>
+            <FormErrorMessage>Error message</FormErrorMessage>
+          </FormControl>
+          <FormControl mb={5} isRequired>
+            <FormLabel>Item cost</FormLabel>
+            <Input onChange={(e) => setCost(e.target.value)}/>
+            <FormHelperText>Add the cost of your item.</FormHelperText>
             <FormErrorMessage>Error message</FormErrorMessage>
           </FormControl>
           <FormControl mb={5}>
             <FormLabel>Description</FormLabel>
-            <Textarea />
+            <Textarea onChange={(e)=> setDescription(e.target.value)} />
             <FormHelperText>Add a description.</FormHelperText>
             <FormErrorMessage>Error message</FormErrorMessage>
           </FormControl>
+          <Stack spacing={2} mb={5}>
+            <Text textAlign="center" display="flex" fontWeight="bold">
+              Condition
+            </Text>
+            <Select
+              name="Condition"
+              icon={<ChevronDownIcon />}
+              variant="outline"
+              size="md"
+              onChange={(e)=> setCondition(e.target.value)}
+              backgroundColor="#ffffff"
+              color="#000000"
+              bgGradient="linear(to right, #ffffff,#aeaeae)">
+                <option value={"GOOD"}>GOOD</option>
+                <option value={"USABLE"}>USABLE</option>
+                <option value={"BAD"}>BAD</option>
+
+                </Select>
+          </Stack>
+          <Stack spacing={2} mb={5}>
+            <Text textAlign="center" display="flex" fontWeight="bold">
+              Category
+            </Text>
+            <Select
+              name="Category"
+              icon={<ChevronDownIcon />}
+              variant="outline"
+              size="md"
+              onChange={(e)=>setCategory(e.target.value)}
+              backgroundColor="#ffffff"
+              color="#000000"
+              bgGradient="linear(to right, #ffffff,#aeaeae)">
+                <option value={"CAR"}>CAR</option>
+                <option value={"COMPUTER"}>COMPUTER</option>
+                <option value={"SOFTWARE"}>SOFTWARE</option>
+                <option value={"CLOTHE"}>CLOTHE</option>
+                <option value={"BAG"}>BAG</option>
+                <option value={"PHONE"}>PHONE</option>
+                <option value={"TOY"}>TOY</option>
+
+
+
+                </Select>
+          </Stack>
           <Divider borderColor="blackAlpha.500" />
           <SimpleGrid columns={2} spacingX={100} spacingY={1} mt={10}>
             <Button
@@ -106,6 +189,7 @@ const Addit = () => (
               justifyContent="center"
               flexDirection="row"
               alignItems="center"
+              onClick={addit}
             >
               Add
             </Button>
@@ -114,6 +198,6 @@ const Addit = () => (
       </Container>
     </Container>
   </ChakraProvider>
-)
-
+  )
+}
 export default Addit

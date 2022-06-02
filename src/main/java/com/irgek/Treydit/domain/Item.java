@@ -27,18 +27,28 @@ public class Item {
     private String name;
     @NotBlank
     private String description;
-    @NotBlank
+
     private double cost;
-    @NotBlank
+
     @Enumerated(EnumType.STRING)
     private Condition condition;
-    @NotBlank
+
     @Enumerated(EnumType.STRING)
     private Category category;
     @ManyToOne
     private Treyder treyder;
 
+    private String photos;
+
     private LocalDateTime created;
     private LocalDateTime updated;
 
+    public Item(String name, String description, double cost, Condition condition, Category category, Treyder treyder) {
+        this.name = name;
+        this.description = description;
+        this.cost = cost;
+        this.condition = condition;
+        this.category = category;
+        this.treyder = treyder;
+    }
 }

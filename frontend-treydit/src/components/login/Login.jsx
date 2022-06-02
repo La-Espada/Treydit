@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useContext, useState} from 'react'
 import {
   ChakraProvider,
   InputGroup,
@@ -14,8 +14,10 @@ import {
 } from '@chakra-ui/react'
 import { CopyIcon } from '@chakra-ui/icons'
 import { useNavigate } from 'react-router-dom'
+import { reverseMultiplyAndSum } from 'validator/lib/util/algorithms';
 
 function Login() {
+  const [user,setUser] = useState();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -31,14 +33,19 @@ function Login() {
         "Accept":"application/json",
       },
       body:JSON.stringify(item)
-    }).then(response => {
-      if(response.ok){
-        navigate("/dashboard")
-      }
-      throw new Error("Something went wrong...")
     });
-    result = await result.json();
-    localStorage.setItem("user-info",JSON.stringify(result))
+    if (result.ok) {
+      navigate("/dashboard")
+    }
+    let json = await result.json();
+    const string = JSON.stringify(json);
+    console.log(json);
+    console.log(string);
+    setUser(JSON.parse(string));
+    console.log(user);
+    //setUser(result);
+    localStorage.setItem("user",user);
+    console.log(localStorage.getItem('user'));
   }
 return(
   <ChakraProvider resetCSS>

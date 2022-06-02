@@ -7,10 +7,12 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.irgek.Treydit.domain.*;
+import com.irgek.Treydit.payload.request.ItemRequest;
 import com.irgek.Treydit.payload.request.LoginRequest;
 import com.irgek.Treydit.payload.request.SignupRequest;
 import com.irgek.Treydit.payload.response.JwtResponse;
 import com.irgek.Treydit.payload.response.MessageResponse;
+import com.irgek.Treydit.persistence.ItemRepository;
 import com.irgek.Treydit.persistence.RoleRepository;
 import com.irgek.Treydit.persistence.TreyderRepository;
 import com.irgek.Treydit.service.TreyderServiceImpl;
@@ -58,6 +60,8 @@ public class TreyderRestController {
     TreyderRepository treyderRepository;
     @Autowired
     RoleRepository roleRepository;
+    @Autowired
+    ItemRepository itemRepository;
 
     private final TreyderServiceImpl treyderService;
 
@@ -67,6 +71,10 @@ public class TreyderRestController {
         return ResponseEntity.ok().body(treyderService.getTreyder());
     }
 
+    @GetMapping("/item")
+    public ResponseEntity<List<Item>> getItems(){
+        return ResponseEntity.ok().body(itemRepository.findAll());
+    }
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody SignupRequest signupRequest){
@@ -91,10 +99,11 @@ public class TreyderRestController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest){
+        Treyder treyder= null;
         if(treyderRepository.existsByEmail(loginRequest.getEmail())){
-            Treyder treyder = treyderRepository.findTreyderByEmail(loginRequest.getEmail());
+             treyder = treyderRepository.findTreyderByEmail(loginRequest.getEmail());
             if(treyder.getPassword().equals(loginRequest.getPassword())){
-                return ResponseEntity.ok(new MessageResponse("Login successfully!"));
+                return ResponseEntity.ok(treyder);
             }
             return ResponseEntity.badRequest().body(new MessageResponse("Wrong password!"));
         }
@@ -102,18 +111,21 @@ public class TreyderRestController {
     }
 
     @PostMapping("/{id}/addItem")
-    public ResponseEntity<?> addItemtoUser(@Valid @PathVariable("id") Long id){
+    public ResponseEntity<?> addItemtoUser(@Valid @PathVariable("id") Long id, @RequestBody ItemRequest item){
 
         List<Item> items = null;
+        Item item1 = null;
         Treyder treyder = treyderRepository.findTreyderById(id);
         if(treyder == null){
             log.error("No right user");
+            return ResponseEntity.badRequest().body(new MessageResponse("Login successfully!"));
         }
         else {
-        items = treyder.getItems();
+            item1 = new Item(item.getName(),item.getDescription(),item.getCost(),item.getCondition(),item.getCategory(),treyder);
+            treyder.getItems().add(item1);
+            itemRepository.save(item1);
+            return ResponseEntity.ok(item1);
         }
-
-        return ResponseEntity.ok(new MessageResponse("Login successfully!"));
 
     }
     /*@PostMapping("/login")
@@ -194,6 +206,8 @@ public class TreyderRestController {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/role/add").toUriString());
         return ResponseEntity.created(uri).body(treyderService.saveRole(role));
     }
+
+
 
     @PostMapping("/role/addtoTreyder")
     public ResponseEntity<?> addRole(@RequestBody RoleToUserForm form) {

@@ -49,7 +49,9 @@ function Register(){
       if(response.ok){
         navigate("/login")
       }
+      else{
       throw new Error("Something went wrong...")
+      }
     });
     result = await result.json();
     localStorage.setItem("user-info",JSON.stringify(result))

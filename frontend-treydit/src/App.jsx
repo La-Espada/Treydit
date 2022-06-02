@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { ChakraProvider, Flex, IconButton, Image, Text } from '@chakra-ui/react'
 import { Search2Icon, SettingsIcon, CopyIcon } from '@chakra-ui/icons'
 import { Router, Routes, Route, Navigate, BrowserRouter, } from 'react-router-dom';
@@ -11,11 +11,15 @@ import Offer from "./components/offer/Offer"
 import AcceptOffer from "./components/acceptoffer/AcceptOffer"
 import Landing from './components/landingPage/LandingPage';
 
+const UserContext = React.createContext(null);
 
 function App(){
+      const [user,setUser] = useState(null);
+      
       return(
       
            <BrowserRouter>
+           <UserContext.Provider value={user}>
             <Routes>
             <Route exact path="/" element={<Landing/>}/>
              <Route exact path="/dashboard" element={<Dashboard/>}/>
@@ -26,6 +30,7 @@ function App(){
              <Route exact path="/offer" element={<Offer/>}/>
              <Route exact path="/acceptoffer" element={<AcceptOffer/>}/>
             </Routes>
+            </UserContext.Provider>
             </BrowserRouter>   
    );
 }
