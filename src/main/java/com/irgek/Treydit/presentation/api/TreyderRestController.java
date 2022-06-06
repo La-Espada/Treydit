@@ -7,6 +7,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.irgek.Treydit.domain.*;
+import com.irgek.Treydit.domain.security.PasswordHash;
 import com.irgek.Treydit.payload.request.ItemRequest;
 import com.irgek.Treydit.payload.request.LoginRequest;
 import com.irgek.Treydit.payload.request.SignupRequest;
@@ -16,6 +17,7 @@ import com.irgek.Treydit.persistence.ItemRepository;
 import com.irgek.Treydit.persistence.RoleRepository;
 import com.irgek.Treydit.persistence.TreyderRepository;
 import com.irgek.Treydit.service.TreyderServiceImpl;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,20 +31,30 @@ import org.springframework.security.crypto.password.PasswordEncoder;*/
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.net.URI;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.KeySpec;
+import java.time.Clock;
 import java.util.*;
 import java.util.stream.Collectors;
+
 
 import static java.util.Arrays.stream;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-@RequiredArgsConstructor
+@AllArgsConstructor
 
 @Slf4j
 @RestController
@@ -64,6 +76,12 @@ public class TreyderRestController {
     ItemRepository itemRepository;
 
     private final TreyderServiceImpl treyderService;
+    @Autowired
+    PasswordHash hash;
+
+
+
+
 
 
     @GetMapping("/treyder")
@@ -77,7 +95,7 @@ public class TreyderRestController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@Valid @RequestBody SignupRequest signupRequest){
+    public ResponseEntity<?> register(@Valid @RequestBody SignupRequest signupRequest) throws NoSuchAlgorithmException, InvalidKeySpecException {
 
         if(treyderRepository.existsByEmail(signupRequest.getEmail())){
             return ResponseEntity
@@ -89,20 +107,43 @@ public class TreyderRestController {
                     .badRequest()
                     .body(new MessageResponse("Error: Username ist already in use!"));
         }
+        /*SecureRandom random = new SecureRandom();
 
-        Treyder treyder =new Treyder(signupRequest.getUsername(),signupRequest.getEmail(),signupRequest.getPassword(),
+        byte[] salt = new byte[16];
+        random.nextBytes(salt);
+        KeySpec spec = new PBEKeySpec(signupRequest.getPassword().toCharArray(), salt, 65536, 128);
+        SecretKeyFactory f = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+        byte[] hash = f.generateSecret(spec).getEncoded();
+        Base64.Encoder enc = Base64.getEncoder();
+        System.out.printf("salt: %s%n", enc.encodeToString(salt));
+        System.out.printf("hash: %s%n", enc.encodeToString(hash));*/
+        String hashedPassword = hash.encrypt(signupRequest.getPassword());
+
+
+
+        Treyder treyder =new Treyder(signupRequest.getUsername(),signupRequest.getEmail(),hashedPassword,
                 signupRequest.getFirstname(),signupRequest.getLastname(),signupRequest.getGender(),signupRequest.getPhonenumber());
 
         treyderRepository.save(treyder);
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
 
+
+
+
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest){
         Treyder treyder= null;
         if(treyderRepository.existsByEmail(loginRequest.getEmail())){
              treyder = treyderRepository.findTreyderByEmail(loginRequest.getEmail());
-            if(treyder.getPassword().equals(loginRequest.getPassword())){
+             String inputPassword = hash.encrypt(loginRequest.getPassword());
+             String databasePassword = hash.decrypt(treyder.getPassword());
+
+             System.out.println(inputPassword);
+             System.out.println(databasePassword);
+
+            if(loginRequest.getPassword().equals(databasePassword)){
                 return ResponseEntity.ok(treyder);
             }
             return ResponseEntity.badRequest().body(new MessageResponse("Wrong password!"));
