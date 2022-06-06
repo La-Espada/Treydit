@@ -38,17 +38,19 @@ public class Item {
     @ManyToOne
     private Treyder treyder;
 
-    private String photos;
+    private String photo;
 
     private LocalDateTime created;
     private LocalDateTime updated;
 
-    public Item(String name, String description, double cost, Condition condition, Category category, Treyder treyder) {
+    public Item(String name, String description, double cost, Condition condition, Category category, Treyder treyder,String filename) {
         this.name = name;
         this.description = description;
         this.cost = cost;
         this.condition = condition;
         this.category = category;
         this.treyder = treyder;
+        this.photo = filename;
+
     }
 }

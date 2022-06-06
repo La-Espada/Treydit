@@ -29,14 +29,34 @@ function Addit(){
   const [name, setName] = useState();
   const [description, setDescription] = useState();
   const [cost, setCost] = useState();
+  const [image, setImage] = useState();
   const [condition, setCondition] = useState();
   const [category, setCategory] = useState();
   const [treyderId,setTreyderId] = useState();
+
+
+  const onImageChange = (event) => {
+    if (event.target.files && event.target.files[0]) {
+      setImage(URL.createObjectURL(event.target.files[0]));
+    }
+   }
+  const onSourceChange = (e) =>{
+    showImageThumbnail(this);
+
+  }
+  function showImageThumbnail(fileInput){
+
+  }
+
+
   let navigate = useNavigate();
 
+
+
+
   async function addit(){
-    console.warn(name,description,cost,condition,category,treyderId);
-    let item = {name,description,cost,condition,category,treyderId};
+    console.warn(name,description,cost,condition,category,treyderId,image);
+    let item = {name,description,cost,condition,category,treyderId,image};
     let result = await fetch("http://localhost:8080/api/3/addItem",{
       method:'POST',
       headers:{
@@ -85,11 +105,17 @@ function Addit(){
             <Image
               height="100px"
               width="100px"
-              fallbackSrc="https://static.vecteezy.com/system/resources/previews/000/349/672/original/camera-vector-icon.jpg"
+              src={image}
               backgroundColor="#ffffff"
             />
+            <Input type="file" name="image" onChange={onImageChange} accecpt="image/png , image/jpeg" />
+            
             <IconButton
               aria-label="icon"
+              type='file'
+
+              name="fileImage"
+              id="fileimage"
               icon={<AddIcon />}
               size="md"
               mt={2}

@@ -29,4 +29,6 @@ public class ItemRequest {
 
     @Enumerated(EnumType.STRING)
     private Category category;
+
+    private String image;
 }

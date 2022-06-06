@@ -7,6 +7,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.irgek.Treydit.domain.*;
+import com.irgek.Treydit.domain.saveImages.FileUploadUtil;
 import com.irgek.Treydit.domain.security.PasswordHash;
 import com.irgek.Treydit.payload.request.ItemRequest;
 import com.irgek.Treydit.payload.request.LoginRequest;
@@ -28,7 +29,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;*/
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.crypto.Cipher;
@@ -152,23 +155,28 @@ public class TreyderRestController {
     }
 
     @PostMapping("/{id}/addItem")
-    public ResponseEntity<?> addItemtoUser(@Valid @PathVariable("id") Long id, @RequestBody ItemRequest item){
+    public ResponseEntity<?> addItemtoUser(@Valid @PathVariable("id") Long id, @RequestBody ItemRequest item, @RequestParam("image")MultipartFile multipartFile) throws IOException {
 
         List<Item> items = null;
         Item item1 = null;
         Treyder treyder = treyderRepository.findTreyderById(id);
         if(treyder == null){
             log.error("No right user");
-            return ResponseEntity.badRequest().body(new MessageResponse("Login successfully!"));
+            return ResponseEntity.badRequest().body(new MessageResponse("User does not exists!"));
         }
         else {
-            item1 = new Item(item.getName(),item.getDescription(),item.getCost(),item.getCondition(),item.getCategory(),treyder);
+            String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+
+            item1 = new Item(item.getName(),item.getDescription(),item.getCost(),item.getCondition(),item.getCategory(),treyder,fileName);
             treyder.getItems().add(item1);
+            String uploadDir = "item-imagess/" + item1.getId();
+            FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
             itemRepository.save(item1);
             return ResponseEntity.ok(item1);
         }
 
     }
+
     /*@PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest){
         Authentication authentication = authenticationManager.authenticate(
