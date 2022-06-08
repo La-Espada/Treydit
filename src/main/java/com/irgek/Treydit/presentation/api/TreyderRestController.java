@@ -97,6 +97,13 @@ public class TreyderRestController {
         return ResponseEntity.ok().body(itemRepository.findAll());
     }
 
+    @GetMapping("/{id}/item")
+    public ResponseEntity<List<Item>> getItems(@PathVariable Long id){
+        Treyder treyder = treyderRepository.findTreyderById(id);
+        return ResponseEntity.ok().body(treyder.getItems());
+    }
+
+
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody SignupRequest signupRequest) throws NoSuchAlgorithmException, InvalidKeySpecException {
 
@@ -154,8 +161,9 @@ public class TreyderRestController {
         return ResponseEntity.badRequest().body(new MessageResponse("User doesnt exists!"));
     }
 
+
     @PostMapping("/{id}/addItem")
-    public ResponseEntity<?> addItemtoUser(@Valid @PathVariable("id") Long id, @RequestBody ItemRequest item, @RequestParam("image")MultipartFile multipartFile) throws IOException {
+    public ResponseEntity<?> addItemtoUser(@Valid @PathVariable("id") Long id, @RequestBody ItemRequest item) throws IOException {
 
         List<Item> items = null;
         Item item1 = null;
@@ -165,12 +173,13 @@ public class TreyderRestController {
             return ResponseEntity.badRequest().body(new MessageResponse("User does not exists!"));
         }
         else {
-            String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+           // String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
 
-            item1 = new Item(item.getName(),item.getDescription(),item.getCost(),item.getCondition(),item.getCategory(),treyder,fileName);
+            item1 = new Item(item.getName(),item.getDescription(),item.getCost(),item.getCondition(),item.getCategory(),treyder,item.getImage());
             treyder.getItems().add(item1);
-            String uploadDir = "item-imagess/" + item1.getId();
-            FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
+            System.out.println(treyder.getItems().size());
+            //String uploadDir = "item-imagess/" + item1.getId();
+            //FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
             itemRepository.save(item1);
             return ResponseEntity.ok(item1);
         }

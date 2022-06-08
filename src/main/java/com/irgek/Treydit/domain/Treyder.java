@@ -63,6 +63,7 @@ public class Treyder  {
     private String phonenumber;
     @Enumerated(EnumType.STRING)
     private Reputation reputation;
+
     @OneToMany
     private List<Item> items = new ArrayList<>();
 

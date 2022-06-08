@@ -71,6 +71,13 @@ function Addit(){
     })
   }
 
+  async function addImage(file){
+    let formData = new FormData();
+    formData.append("file",file);
+    return await fetch("http://localhost:8080/api/3/")
+    
+  }
+
   return(
 <ChakraProvider resetCSS>
     <Container
@@ -108,7 +115,7 @@ function Addit(){
               src={image}
               backgroundColor="#ffffff"
             />
-            <Input type="file" name="image" onChange={onImageChange} accecpt="image/png , image/jpeg" />
+            <Input onChange={(e)=>setImage(e.target.value)}/>
             
             <IconButton
               aria-label="icon"

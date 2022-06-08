@@ -1,5 +1,6 @@
 package com.irgek.Treydit.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -36,6 +37,7 @@ public class Item {
     @Enumerated(EnumType.STRING)
     private Category category;
     @ManyToOne
+    @JsonIgnore
     private Treyder treyder;
 
     private String photo;

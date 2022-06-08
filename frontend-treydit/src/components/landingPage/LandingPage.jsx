@@ -28,6 +28,7 @@ let navigate = useNavigate();
 
 
                 </div>
+                <button onClick={()=> navigate('/login')}>Already treyder?</button>
                 </div>
             </section>
     </div>

@@ -29,6 +29,8 @@ function App(){
              <Route exact path="/add" element={<Add/>}/>
              <Route exact path="/offer" element={<Offer/>}/>
              <Route exact path="/acceptoffer" element={<AcceptOffer/>}/>
+             <Route exact path="/landing" element={<Landing/>}/>
+
             </Routes>
             </UserContext.Provider>
             </BrowserRouter>   
