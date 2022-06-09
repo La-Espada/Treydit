@@ -143,7 +143,7 @@ public class TreyderRestController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest){
+    public ResponseEntity<Treyder> login(@Valid @RequestBody LoginRequest loginRequest){
         Treyder treyder= null;
         if(treyderRepository.existsByEmail(loginRequest.getEmail())){
              treyder = treyderRepository.findTreyderByEmail(loginRequest.getEmail());
@@ -154,11 +154,14 @@ public class TreyderRestController {
              System.out.println(databasePassword);
 
             if(loginRequest.getPassword().equals(databasePassword)){
-                return ResponseEntity.ok(treyder);
+                System.out.println(treyder.getUsername());
+                return ResponseEntity.ok().body(treyder);
             }
-            return ResponseEntity.badRequest().body(new MessageResponse("Wrong password!"));
+            return ResponseEntity.badRequest().body(treyder);
+            //body(new MessageResponse("Wrong password!"));
         }
-        return ResponseEntity.badRequest().body(new MessageResponse("User doesnt exists!"));
+        return ResponseEntity.badRequest().body(treyder);
+        //.body(new MessageResponse("User doesnt exists!"));
     }
 
 

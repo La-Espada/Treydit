@@ -27,7 +27,7 @@ function Login() {
     console.warn(email,password);
     let item = {email,password};
     let result = await fetch("http://localhost:8080/api/login",{
-      method:'POST',
+      method:'Post',
       headers:{
         "Content-Type":"application/json",
         "Accept":"application/json",
@@ -37,15 +37,11 @@ function Login() {
     if (result.ok) {
       navigate("/dashboard")
     }
-    let json = await result.json();
-    const string = JSON.stringify(json);
+    const json = await result.json();
+    setUser(result.data);
+    localStorage.setItem('user',JSON.stringify(json));
+    console.log("halo");
     console.log(json);
-    console.log(string);
-    setUser(JSON.parse(string));
-    console.log(user);
-    //setUser(result);
-    localStorage.setItem("user",user);
-    console.log(localStorage.getItem('user'));
   }
 return(
   <ChakraProvider resetCSS>

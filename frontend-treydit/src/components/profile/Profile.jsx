@@ -21,12 +21,14 @@ function Profile(){
    const [phonenumber, setPhonenumber] = useState();
    const [email, setEmail] = useState();
    const [items, setItems] = useState();
+   const user = JSON.parse(localStorage.getItem('user'));
  
+   console.log(user); 
  
  
     useEffect(()=>{
     
-      fetch("http://localhost:8080/api/treyder/3")
+      fetch("http://localhost:8080/api/treyder/" + user.id)
       .then(response => response.json())
       .then(data => {
         setFirstname(data.firstname);

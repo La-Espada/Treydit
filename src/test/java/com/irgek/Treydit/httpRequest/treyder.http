@@ -14,7 +14,7 @@ Accept: application/json
 }
 
 ####
-GET localhost:8080/api/treyder/3
+GET localhost:8080/api/treyder/
 
 ###
 GET localhost:8080/api/item
